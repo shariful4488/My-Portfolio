@@ -68,8 +68,9 @@ const Hero = () => {
         <div className="animate-left flex flex-wrap gap-5 pt-4">
           {/* Resume Button */}
           <a
-            href="/public/Shariful(1).pdf" 
-            download="Shariful_Islam_Resume"
+            href="/Shariful(1).pdf" 
+            target="_blank"
+            download="Shariful(1).pdf"
             className="flex items-center gap-2 bg-[#00ffee] text-black font-bold py-3.5 px-8 rounded-full shadow-[0_0_20px_rgba(0,255,238,0.4)] hover:shadow-[0_0_40px_rgba(0,255,238,0.6)] hover:scale-105 transition-all duration-300"
           >
             <Download size={20} />

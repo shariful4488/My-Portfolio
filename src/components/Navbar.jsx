@@ -38,15 +38,27 @@ const Navbar = () => {
 
   const handleNavClick = (e, targetId) => {
     e.preventDefault();
-    setIsOpen(false);
-    if (location.pathname !== "/") {
-      navigate("/", { state: { target: targetId } });
-    } else {
-      const element = document.getElementById(targetId);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth", block: "start" });
+    setIsOpen(false); 
+    
+    setTimeout(() => {
+      if (location.pathname !== "/") {
+        navigate("/", { state: { target: targetId } });
+      } else {
+        const element = document.getElementById(targetId);
+        if (element) {
+          const offset = 80; // নেভবারের হাইট অনুযায়ী অ্যাডজাস্টমেন্ট
+          const bodyRect = document.body.getBoundingClientRect().top;
+          const elementRect = element.getBoundingClientRect().top;
+          const elementPosition = elementRect - bodyRect;
+          const offsetPosition = elementPosition - offset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+          });
+        }
       }
-    }
+    }, 100);
   };
 
   return (
@@ -54,46 +66,46 @@ const Navbar = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 px-6 md:px-12 lg:px-24 ${
-        scrolled ? "py-3 glass shadow-2xl border-b border-white/10" : "py-6 bg-transparent"
+      className={`fixed top-0 left-0 w-full z-[1000] transition-all duration-300 px-4 md:px-12 lg:px-24 ${
+        scrolled || isOpen ? "py-3 glass shadow-2xl border-b border-black/5 dark:border-white/10 bg-white/90 dark:bg-black/90" : "py-6 bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-        <Link to="/" className="text-3xl font-extrabold text-black dark:text-white group outline-none tracking-wider shrink-0">
-          <span className="drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] dark:drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">Shariful</span>{" "}
-          <span className="text-[#00ffee] transition-all duration-300 drop-shadow-[0_0_20px_#00ffee] animate-pulse">
+        <Link to="/" className="text-2xl md:text-3xl font-extrabold text-black dark:text-white outline-none tracking-wider shrink-0">
+          <span className="drop-shadow-md">Shariful</span>{" "}
+          <span className="text-[#00ffee] drop-shadow-[0_0_15px_#00ffee]">
             Islam
           </span>
         </Link>
 
-        <div className="flex items-center gap-4">
-          <nav className="hidden lg:flex items-center gap-10"> 
+        <div className="flex items-center gap-2 md:gap-4">
+          <nav className="hidden lg:flex items-center gap-8 mr-4"> 
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={`#${link.href}`}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className="text-lg font-medium text-gray-800 dark:text-gray-200 hover:text-[#00ffee] transition-all duration-300 relative group"
+                className="text-base font-semibold text-gray-800 dark:text-gray-200 hover:text-[#00ffee] transition-all duration-300 relative group"
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#00ffee] transition-all duration-300 group-hover:w-full shadow-[0_0_8px_#00ffee]"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#00ffee] transition-all duration-300 group-hover:w-full"></span>
               </a>
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => setIsDark(!isDark)}
-              className="p-2 rounded-full glass border border-black/10 dark:border-white/10 text-[#00ffee] hover:bg-black/5 dark:hover:bg-white/10 transition-all shadow-[0_0_10px_rgba(0,255,238,0.2)]"
+              className="p-2 rounded-full glass border border-black/10 dark:border-white/10 text-[#00ffee] transition-all"
             >
-              {isDark ? <Sun size={24} /> : <Moon size={24} className="text-gray-800" />}
+              {isDark ? <Sun size={20} /> : <Moon size={20} className="text-gray-800" />}
             </button>
 
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden text-[#00ffee] focus:outline-none p-2 rounded-xl glass border border-black/10 dark:border-white/10"
+              className="lg:hidden text-[#00ffee] p-2 rounded-xl glass border border-black/10 dark:border-white/10"
             >
-              {isOpen ? <X size={28} /> : <Menu size={28} />}
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
@@ -102,17 +114,17 @@ const Navbar = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.nav
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden absolute top-full left-0 w-full glass mt-2 py-8 flex flex-col items-center gap-6 border-b border-black/10 dark:border-white/10 shadow-2xl overflow-hidden"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="lg:hidden absolute top-full left-0 w-full glass bg-white dark:bg-black py-10 flex flex-col items-center gap-6 border-b border-black/10 dark:border-white/10 shadow-2xl z-[999]"
           >
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={`#${link.href}`}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className="text-gray-800 dark:text-white hover:text-[#00ffee] text-xl font-medium transition-colors"
+                className="text-gray-900 dark:text-white hover:text-[#00ffee] text-xl font-bold transition-colors uppercase tracking-widest"
               >
                 {link.label}
               </a>
