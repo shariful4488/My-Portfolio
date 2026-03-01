@@ -7,9 +7,9 @@ const Footer = () => {
 
   const socialLinks = [
     { icon: <Github size={20} />, url: "https://github.com/shariful4488", color: "hover:text-black dark:hover:text-white" },
-    { icon: <Linkedin size={20} />, url: "#", color: "hover:text-[#0077b5]" },
-    { icon: <Facebook size={20} />, url: "#", color: "hover:text-[#1877F2]" },
-    { icon: <Twitter size={20} />, url: "#", color: "hover:text-[#1da1f2]" },
+     { icon: <Linkedin size={20} />, url: "https://www.linkedin.com/in/shariful-islam-30907b267/", color: "hover:text-[#0077b5]" },
+    { icon: <Facebook size={20} />, url: "https://www.facebook.com/shariful.islam.522169/", color: "hover:text-[#1877F2]" },
+    { icon: <Twitter size={20} />, url: "https://x.com/it_shariful", color: "hover:text-[#1da1f2]" },
   ];
 
   return (

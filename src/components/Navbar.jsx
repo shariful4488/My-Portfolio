@@ -46,7 +46,7 @@ const Navbar = () => {
       } else {
         const element = document.getElementById(targetId);
         if (element) {
-          const offset = 80; // নেভবারের হাইট অনুযায়ী অ্যাডজাস্টমেন্ট
+          const offset = 80; 
           const bodyRect = document.body.getBoundingClientRect().top;
           const elementRect = element.getBoundingClientRect().top;
           const elementPosition = elementRect - bodyRect;

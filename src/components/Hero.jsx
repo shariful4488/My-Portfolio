@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
-import { Github, Linkedin, Facebook, Mail, Download, ExternalLink } from "lucide-react";
+import { Github, Linkedin, Facebook, Mail, Download, ExternalLink, Icon, Twitter } from "lucide-react";
 import { TypeAnimation } from "react-type-animation";
 
 const Hero = () => {
@@ -92,6 +92,7 @@ const Hero = () => {
             { Icon: Linkedin, link: "https://www.linkedin.com/in/shariful-islam-30907b267/" },
             { Icon: Facebook, link: "https://www.facebook.com/shariful.islam.522169/" },
             { Icon: Mail, link: "mailto:sharifulislam242248@gmail.com" },
+            {Icon: Twitter, link: "https://x.com/it_shariful"}
           ].map((item, index) => (
             <a
               key={index}
