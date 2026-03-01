@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+/* --- Default Dark Mode (Root) --- */
+:root {
+    --accent-color: #00ffee;
+    --bg-dark: #080808;
+    --text-dark: #ffffff;
+    --text-muted-dark: #9ca3af; 
+}
+
+body {
+    background: var(--bg-dark);
+    color: var(--text-dark);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/
+.glow-text {
+    text-shadow: 0 0 15px var(--accent-color), 0 0 30px var(--accent-color);
+}
+
+body.light-mode {
+    background: #f8f9fa !important; 
+    color: #121212 !important;     
+}
+
+body.light-mode .glass {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(12px);
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+
+/* Light Mode এ নেভিগেশন লিংকের কালার */
+body.light-mode nav a, 
+body.light-mode .text-white,
+body.light-mode h1,
+body.light-mode h3,
+body.light-mode .hero-text {
+    color: #121212 !important; /* টেক্সট কালো হয়ে যাবে */
+}
+
+/* Light Mode এ প্যারাগ্রাফ বা মিউটেড টেক্সট */
+body.light-mode p,
+body.light-mode .text-gray-400 {
+    color: #4b5563 !important; /* গাঢ় ধূসর (gray-600) */
+}
+
+/* Light Mode এ Shariful Islam এর উজ্জ্বলতা */
+body.light-mode .glow-text {
+    color: #008b82 !important; /* সায়ান কালারটি একটু গাঢ় করা হয়েছে যাতে সাদা ব্যাকগ্রাউন্ডে ফুটে ওঠে */
+    text-shadow: 0 0 10px rgba(0, 255, 238, 0.3);
+}
+
+/* Light Mode এ কার্ডের বর্ডার বা অন্যান্য এলিমেন্ট */
+body.light-mode .border-white\/10 {
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Light Mode এ লোগোর প্রথম অংশ (Shariful) */
+body.light-mode .drop-shadow-\[0_0_10px_rgba\(255\,255\,255\,0\.8\)\] {
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.2));
+}
+
+
