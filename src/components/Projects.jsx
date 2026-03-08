@@ -1,189 +1,256 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger"; 
-import { ExternalLink, Github, X, Rocket, Lightbulb } from "lucide-react";
-import { 
-  SiReact, SiNodedotjs, SiMongodb, SiFirebase, 
-  SiStripe, SiTailwindcss, SiExpress, SiFramer, SiVite 
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ExternalLink, Github, X } from "lucide-react";
+
+import {
+  SiReact,
+  SiNodedotjs,
+  SiMongodb,
+  SiFirebase,
+  SiStripe,
+  SiTailwindcss,
+  SiExpress,
+  SiFramer,
+  SiVite,
+  SiNextdotjs
 } from "react-icons/si";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const getIcon = (techName) => {
+// Tech icon helper
+const getIcon = (tech) => {
   const icons = {
-    "React": <SiReact className="text-[#61DAFB]" />,
+    React: <SiReact className="text-[#61DAFB]" />,
     "Node.js": <SiNodedotjs className="text-[#339933]" />,
-    "MongoDB": <SiMongodb className="text-[#47A248]" />,
-    "Firebase": <SiFirebase className="text-[#FFCA28]" />,
+    MongoDB: <SiMongodb className="text-[#47A248]" />,
+    Firebase: <SiFirebase className="text-[#FFCA28]" />,
     "Firebase Auth": <SiFirebase className="text-[#FFCA28]" />,
-    "Stripe": <SiStripe className="text-[#635BFF]" />,
+    Stripe: <SiStripe className="text-[#635BFF]" />,
     "Tailwind CSS": <SiTailwindcss className="text-[#06B6D4]" />,
     "Express.js": <SiExpress className="text-white" />,
     "Framer Motion": <SiFramer className="text-white" />,
-    "Vite": <SiVite className="text-[#646CFF]" />
+    Vite: <SiVite className="text-[#646CFF]" />,
+    "Next.js": <SiNextdotjs className="text-white" />
   };
-  return icons[techName] || null;
+  return icons[tech] || null;
 };
 
+// Project data
 const projectsData = [
   {
     id: 1,
     title: "Contest Creator Platform",
-    image: "https://i.ibb.co.com/MyvRkc77/Screenshot-2026-03-02-024836.png", 
+    image: "https://i.ibb.co/MyvRkc77/Screenshot-2026-03-02-024836.png",
     tech: ["React", "Node.js", "MongoDB", "Firebase", "Stripe"],
-    description: "A comprehensive MERN stack platform where users can create, manage, and participate in various contests with integrated payment systems.",
+    description:
+      "A MERN stack platform where users can create contests and participate easily.",
     live: "https://contest-creator-7e5d8.web.app/",
-    github: "https://github.com/shariful4488/Contest-creator-frontend", 
-    challenges: "Managing complex role-based access control (Admin, Creator, User) and ensuring secure payment processing with Stripe was a significant technical challenge.",
-    future: "I plan to implement a real-time leaderboard using Socket.io and an automated certificate generation system for winners."
+    github: "https://github.com/shariful4488/Contest-creator-frontend",
+    challenges:
+      "Managing role-based access control and secure Stripe payments.",
+    future: "Add real-time leaderboard and certificate generation."
   },
   {
     id: 2,
-    title: "StudyMate - Collaborative Learning",
-    image: "https://i.ibb.co.com/6JwkD81j/Screenshot-2026-03-02-024902.png",
-    tech: ["React", "Firebase Auth", "Tailwind CSS", "Express.js"],
-    description: "An interactive platform designed for students to share assignments, study materials, and collaborate on group projects efficiently.",
-    live: "https://studymate-8bc38.web.app/",
-    github: "https://github.com/shariful4488/Studymart-Frontend",
-    challenges: "Handling real-time assignment status updates and creating a smooth PDF previewing experience for uploaded study materials.",
-    future: "Planning to add a group video-chat feature and an AI-powered study schedule generator based on student deadlines."
+    title: "ProductHub",
+    image: "https://i.ibb.co/bjXYSZXB/Screenshot-2026-03-08-003229.png",
+    tech: ["React", "Next.js", "MongoDB", "Tailwind CSS"],
+    description: "Product management web application.",
+    live: "https://product-hub-eta-topaz.vercel.app/",
+    github: "https://github.com/shariful4488/ProductHub",
+    challenges: "Secure authentication with NextAuth.",
+    future: "Add wishlist and fuzzy search."
   },
   {
     id: 3,
-    title: "Cloth Store Frontend",
-    image: "https://i.ibb.co.com/5xF7Z80N/Screenshot-2026-03-02-024921.png",
+    title: "StudyMate",
+    image: "https://i.ibb.co/6JwkD81j/Screenshot-2026-03-02-024902.png",
+    tech: ["React", "Firebase Auth", "Tailwind CSS", "Express.js"],
+    description: "Collaborative learning platform.",
+    live: "https://studymate-8bc38.web.app/",
+    github: "https://github.com/shariful4488/Studymart-Frontend",
+    challenges: "Real-time assignment updates.",
+    future: "Add video chat feature."
+  },
+  {
+    id: 4,
+    title: "Cloth Store",
+    image: "https://i.ibb.co/5xF7Z80N/Screenshot-2026-03-02-024921.png",
     tech: ["React", "Tailwind CSS", "Framer Motion", "Vite"],
-    description: "A high-performance, pixel-perfect e-commerce frontend focusing on smooth user experience, modern aesthetics, and responsive layout.",
+    description: "Modern ecommerce frontend.",
     live: "https://frontend-peach-xi.vercel.app/",
     github: "https://github.com/shariful4488/Frontend",
-    challenges: "Achieving complex CSS animations while maintaining 60fps performance and ensuring a seamless mobile-first shopping experience.",
-    future: "I intend to convert this into a full-stack MERN application by adding a custom dashboard and an inventory management system."
+    challenges: "Complex animations with good performance.",
+    future: "Convert to MERN ecommerce system."
   }
 ];
 
 const Projects = () => {
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [showAll, setShowAll] = useState(false);
   const sectionRef = useRef(null);
 
+  const displayedProjects = showAll ? projectsData : projectsData.slice(0, 3);
+
   useEffect(() => {
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       gsap.from(".project-card", {
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 80%",
+          start: "top 80%"
         },
         y: 60,
         opacity: 0,
         duration: 1,
-        stagger: 0.2,
-        ease: "power4.out"
+        stagger: 0.2
       });
-    }, sectionRef);
+    });
     return () => ctx.revert();
-  }, []);
+  }, [showAll]);
+
+  const selectedProject =
+    selectedIndex !== null ? displayedProjects[selectedIndex] : null;
 
   return (
-    <section ref={sectionRef} id="projects" className="py-24 px-6 md:px-12 lg:px-24 bg-transparent">
+    <section ref={sectionRef} id="projects" className="py-20 px-4 md:px-10 lg:px-20">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-black mb-4 text-white uppercase tracking-tighter">
-            Featured <span className="text-[#00ffee] glow-text">Work</span>
+
+        {/* TITLE */}
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-black text-white">
+            Featured <span className="text-[#00ffee]">Work</span>
           </h2>
-          <div className="w-24 h-1.5 bg-[#00ffee] mx-auto rounded-full shadow-[0_0_15px_#00ffee]"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {projectsData.map((project) => (
+        {/* PROJECT GRID */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {displayedProjects.map((project, index) => (
             <div key={project.id} className="project-card group">
-              <div className="glass rounded-[2.5rem] overflow-hidden border border-white/5 hover:border-[#00ffee]/40 transition-all duration-500 shadow-2xl">
-                <div className="relative h-64 overflow-hidden">
-                  <img 
-                    src={project.image} 
-                    alt={project.title} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 brightness-90 group-hover:brightness-100" 
+              <div className="rounded-3xl overflow-hidden border border-white/10 hover:border-[#00ffee]/40 transition">
+                <div className="relative h-52 md:h-60 overflow-hidden">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-transparent opacity-80"></div>
                 </div>
-                <div className="p-8">
-                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-[#00ffee] transition-colors">{project.title}</h3>
-                  <div className="flex flex-wrap gap-3 mb-6">
-                    {project.tech.slice(0, 3).map((t, i) => (
-                      <span key={i} className="flex items-center gap-1.5 text-[11px] uppercase tracking-wider text-gray-300 font-bold bg-white/5 border border-white/10 px-3 py-1 rounded-full">
-                        {getIcon(t)} {t}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-white mb-4">{project.title}</h3>
+
+                  {/* TECH STACK */}
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    {project.tech.slice(0, 3).map((tech, i) => (
+                      <span
+                        key={i}
+                        className="flex items-center gap-1 text-xs text-gray-300 bg-white/5 px-2 py-1 rounded"
+                      >
+                        {getIcon(tech)}
+                        {tech}
                       </span>
                     ))}
                   </div>
-                  <button 
-                    onClick={() => setSelectedProject(project)}
-                    className="w-full py-4 bg-white/5 border border-white/10 rounded-2xl text-[#00ffee] font-black uppercase tracking-widest hover:bg-[#00ffee] hover:text-[#080808] transition-all duration-500 shadow-inner"
+
+                  <button
+                    onClick={() => setSelectedIndex(index)}
+                    className="w-full py-3 bg-[#00ffee] text-black font-semibold rounded-xl hover:scale-105 transition"
                   >
-                    Explore Details
+                    View Details
                   </button>
                 </div>
               </div>
             </div>
           ))}
         </div>
+
+
+        <div className="text-center mt-12">
+          <button
+            onClick={() => setShowAll(!showAll)}
+            className={`px-8 py-3 font-bold rounded-xl transition ${
+              showAll ? "bg-white/10 text-white hover:bg-white/20" : "bg-[#00ffee] text-black hover:scale-105"
+            }`}
+          >
+            {showAll ? "Show Less" : "Explore All Projects"}
+          </button>
+        </div>
+
       </div>
 
+      {/* MODAL */}
       <AnimatePresence>
         {selectedProject && (
-          <motion.div 
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-[#080808]/95 backdrop-blur-xl"
-            onClick={() => setSelectedProject(null)}
+          <motion.div
+            className="fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           >
-            <motion.div 
-              initial={{ scale: 0.9, y: 50 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 50 }}
-              className="glass max-w-5xl w-full max-h-[85vh] overflow-y-auto rounded-[3rem] border border-white/20 p-8 md:p-14 relative"
-              onClick={(e) => e.stopPropagation()}
+            <motion.div
+              className="bg-[#111] max-w-4xl w-full max-h-[90vh] overflow-y-auto rounded-3xl p-6 md:p-10"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
             >
-              <button onClick={() => setSelectedProject(null)} className="absolute top-8 right-8 p-3 bg-white/5 rounded-full hover:bg-red-500/20 text-white transition-all z-10">
-                <X size={24} />
-              </button>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <div className="space-y-6">
-                  <img src={selectedProject.image} className="w-full h-auto aspect-video object-cover rounded-[2rem] shadow-2xl border border-white/10" alt="" />
-                  <div className="flex flex-wrap gap-4 pt-4">
-                    <a href={selectedProject.live} target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-2 py-4 bg-[#00ffee] text-[#080808] font-black rounded-2xl hover:shadow-[0_0_25px_#00ffee] transition-all">
-                      <ExternalLink size={20} /> LIVE DEMO
-                    </a>
-                    <a href={selectedProject.github} target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-2 py-4 bg-white/5 border border-white/10 text-white font-black rounded-2xl hover:bg-white/10 transition-all">
-                      <Github size={20} /> CLIENT CODE
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex flex-col">
-                  <h2 className="text-4xl font-black text-white mb-4 uppercase tracking-tighter">{selectedProject.title}</h2>
-                  <div className="flex flex-wrap gap-3 mb-8">
-                    {selectedProject.tech.map((t, i) => (
-                      <span key={i} className="flex items-center gap-2 px-4 py-1.5 bg-[#00ffee]/10 border border-[#00ffee]/30 rounded-xl text-[12px] text-[#00ffee] font-bold uppercase tracking-widest">
-                        {getIcon(t)} {t}
-                      </span>
-                    ))}
-                  </div>
-
-                  <p className="text-gray-300 text-lg leading-relaxed mb-10 text-justify">{selectedProject.description}</p>
-                  
-                  <div className="space-y-8 bg-white/5 p-8 rounded-3xl border border-white/5">
-                    <div className="space-y-3">
-                      <h4 className="flex items-center gap-3 text-[#00ffee] font-bold uppercase tracking-widest text-sm">
-                        <Rocket size={18} /> Challenges Faced
-                      </h4>
-                      <p className="text-sm text-gray-400 leading-relaxed italic">{selectedProject.challenges}</p>
-                    </div>
-                    <div className="space-y-3 pt-4 border-t border-white/10">
-                      <h4 className="flex items-center gap-3 text-[#00ffee] font-bold uppercase tracking-widest text-sm">
-                        <Lightbulb size={18} /> Future Roadmaps
-                      </h4>
-                      <p className="text-sm text-gray-400 leading-relaxed italic">{selectedProject.future}</p>
-                    </div>
-                  </div>
-                </div>
+              <div className="flex justify-end mb-4">
+                <button
+                  onClick={() => setSelectedIndex(null)}
+                  className="p-2 hover:bg-white/10 rounded-lg"
+                >
+                  <X size={24} className="text-white" />
+                </button>
               </div>
+
+              <img
+                src={selectedProject.image}
+                alt={selectedProject.title}
+                className="w-full rounded-xl mb-6"
+              />
+
+              <h3 className="text-3xl font-bold text-white mb-4">{selectedProject.title}</h3>
+
+              <div className="flex flex-wrap gap-3 mb-6">
+                {selectedProject.tech.map((tech, i) => (
+                  <span
+                    key={i}
+                    className="flex items-center gap-2 px-3 py-1 bg-white/10 rounded text-sm text-white"
+                  >
+                    {getIcon(tech)}
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              <p className="text-gray-300 mb-6">{selectedProject.description}</p>
+
+              <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                <a
+                  href={selectedProject.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-[#00ffee] text-black py-3 rounded-xl"
+                >
+                  <ExternalLink size={18} />
+                  Live Project
+                </a>
+                <a
+                  href={selectedProject.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-white/10 text-white py-3 rounded-xl"
+                >
+                  <Github size={18} />
+                  Client Code
+                </a>
+              </div>
+
+              <p className="text-gray-400 mb-4">
+                <strong>Challenges:</strong> {selectedProject.challenges}
+              </p>
+              <p className="text-gray-400">
+                <strong>Future:</strong> {selectedProject.future}
+              </p>
             </motion.div>
           </motion.div>
         )}

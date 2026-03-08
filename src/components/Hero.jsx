@@ -88,7 +88,7 @@ const Hero = () => {
         {/* Social Links */}
         <div className="animate-left flex items-center gap-5 pt-8">
           {[
-            { Icon: Github, link: "https://github.com/shariful4488" },
+            { Icon: Github, link: "https://github.com/sharifulNext" },
             { Icon: Linkedin, link: "https://www.linkedin.com/in/shariful-islam-30907b267/" },
             { Icon: Facebook, link: "https://www.facebook.com/shariful.islam.522169/" },
             { Icon: Mail, link: "mailto:sharifulislam242248@gmail.com" },
